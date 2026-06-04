@@ -1,0 +1,13 @@
+.gcloudignore
+.git
+.gitignore
+__pycache__/
+frontend/
+node_modules/
+.next/
+.tempmediaStorage/
+brain/
+*.png
+*.webp
+*.jpg
+*.jpeg

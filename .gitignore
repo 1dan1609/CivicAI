@@ -1,0 +1,12 @@
+# Backend and Environment secrets
+.env
+.env*.local
+__pycache__/
+*.pyc
+
+# Local Scratch directory
+scratch/
+
+# Operating system files
+.DS_Store
+Thumbs.db
