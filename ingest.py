@@ -2,6 +2,8 @@ import requests
 import re
 from google.cloud import storage
 from google.cloud import discoveryengine_v1 as discoveryengine
+from datetime import datetime, timezone, timedelta
+import time
 
 import os
 from dotenv import load_dotenv
@@ -15,6 +17,19 @@ API_TOKEN = os.getenv("LEGISTAR_API_TOKEN", "")
 
 BASE_URL = f"https://webapi.legistar.com/v1/{CLIENT_NAME}"
 BUCKET_NAME = os.getenv("BUCKET_NAME", "civic-ai-agendas-va") 
+
+def parse_utc_date(date_str):
+    """Parses a UTC ISO 8601 date string from Legistar."""
+    if not date_str:
+        return None
+    try:
+        # datetime.fromisoformat handles standard ISO formats, we strip trailing Z
+        # Legistar often returns format like '2019-06-27T19:15:36.987'
+        dt = datetime.fromisoformat(date_str.replace("Z", ""))
+        return dt.replace(tzinfo=timezone.utc)
+    except Exception as e:
+        print(f"Error parsing date '{date_str}': {e}")
+        return None 
 
 def upload_to_gcp(file_bytes, destination_blob_name):
     """Uploads a file directly to your Google Cloud bucket."""
@@ -43,7 +58,7 @@ def trigger_vertex_import():
         parent = client.branch_path(
             project=os.getenv("PROJECT_ID"),
             location="global",
-            data_store=os.getenv("DATASTORE_ID"),
+            data_store=os.getenv("DATASTORE_ID") or os.getenv("DATA_STORE_ID"),
             branch="default_branch",
         )
         gcs_uri = "gs://civic-ai-agendas-va/*"
@@ -82,7 +97,21 @@ def process_legistar():
     uploaded_count = 0
     skipped_count = 0
     
+    # We want to check only for documents from the last 3 days.
+    # Since matters are retrieved with $orderby=MatterLastModifiedUtc desc,
+    # the most recently modified matters are at the start of the list.
+    # Once we encounter a matter older than 3 days, we can break.
+    cutoff = datetime.now(timezone.utc) - timedelta(days=3)
+    print(f"Filtering for documents last modified after: {cutoff.isoformat()} (UTC)...")
+    
     for matter in matters:
+        last_modified_str = matter.get("MatterLastModifiedUtc")
+        last_modified = parse_utc_date(last_modified_str)
+        if last_modified:
+            if last_modified < cutoff:
+                print(f"Matter last modified on {last_modified_str} is older than 3 days. Stopping ingestion loop.")
+                break
+        
         matter_id = matter.get("MatterId")
         matter_title = matter.get("MatterName", f"matter_{matter_id}")
         
@@ -117,6 +146,8 @@ def process_legistar():
                             uploaded_count += 1
                         else:
                             print(f"   -> Failed to download. Status code: {file_data.status_code}")
+                        # Polite delay to prevent rate-limiting/dropped connections from Legistar
+                        time.sleep(0.1)
                     except Exception as e:
                         print(f"   -> Exception downloading {filename}: {e}")
                         
@@ -132,7 +163,7 @@ if __name__ == "__main__":
         process_legistar()
     except Exception as e:
         print(f"CRITICAL: Connection or runtime error occurred: {e}", file=sys.stderr)
-        print("Waiting 30 minutes before retrying...", file=sys.stderr)
-        time.sleep(1800)  # 30 minutes
+        print("Waiting 30 seconds before retrying...", file=sys.stderr)
+        time.sleep(30)  # 30 seconds
         print("Retrying ingestion now...", file=sys.stderr)
         process_legistar()

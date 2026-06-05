@@ -21,6 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY main.py .
+COPY ingest.py .
 COPY .env .
 
 # Expose port (Cloud Run defaults to 8080)

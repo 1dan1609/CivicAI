@@ -246,7 +246,7 @@ def search_vertex_ai(search_query: str):
         request = discoveryengine.SearchRequest(
             serving_config=serving_config,
             query=search_query,
-            page_size=35,  # Fetch larger batch to allow for de-duplication of repetitive council files and robust filters
+            page_size=15,  # Fetch top 15 results to balance deduplication headroom and low LLM latency
             content_search_spec=discoveryengine.SearchRequest.ContentSearchSpec(
                 extractive_content_spec=discoveryengine.SearchRequest.ContentSearchSpec.ExtractiveContentSpec(
                     max_extractive_segment_count=3,
