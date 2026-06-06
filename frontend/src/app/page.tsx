@@ -977,7 +977,7 @@ export default function Home() {
   const isChatWorking = chatTurns.some((t) => t.isLoading);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-background to-muted/20 text-foreground flex flex-col font-sans selection:bg-primary/10 relative overflow-hidden">
+    <div className="h-screen bg-linear-to-b from-background to-muted/20 text-foreground flex flex-col font-sans selection:bg-primary/10 relative overflow-hidden">
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
       <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
@@ -1091,7 +1091,7 @@ export default function Home() {
         
         {/* LEFT SIDEBAR: Unified Bookmarks and Dynamic Filters */}
         <aside 
-          className={`shrink-0 border-r border-border/40 bg-background/50 backdrop-blur-md flex flex-col transition-all duration-300 z-10 ${
+          className={`shrink-0 border-r border-border/40 bg-background/50 backdrop-blur-md flex flex-col h-full max-h-full overflow-y-auto transition-all duration-300 z-10 ${
             isSidebarOpen ? "w-[280px] p-4 gap-4" : "w-0 p-0 overflow-hidden border-r-0"
           }`}
         >
@@ -1144,7 +1144,7 @@ export default function Home() {
                 </>
               ) : (
                 /* Unauthenticated Sidebar Prompt */
-                <div className="h-full flex flex-col items-center justify-center text-center p-5 space-y-4 border border-dashed border-border/60 rounded-2xl bg-muted/10 my-auto select-none">
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-5 space-y-4 border border-dashed border-border/60 rounded-2xl bg-muted/10 my-auto select-none min-h-[300px]">
                   <User className="h-9 w-9 text-muted-foreground/30 animate-pulse" />
                   <div className="space-y-1">
                     <h4 className="font-bold text-xs text-foreground/80">{t.notebookLocked}</h4>
