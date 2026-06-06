@@ -8,7 +8,30 @@ By leveraging a robust Retrieval-Augmented Generation (RAG) architecture, CivicA
 
 ---
 
-## 2. How to Run It on Your End
+## 2. Feature Set & System Architecture
+
+CivicAI operates on a dual-layer design, offering high-productivity user interfaces combined with enterprise-grade backend infrastructure.
+
+### A. Visible / Frontend Features
+* **Intelligent Multilingual AI Search (RAG)**: Connects to local government databases to answer policy, legislation, and public record questions with verified, localized answers across multiple languages (English, Spanish, Chinese, Bengali).
+* **Live Rehydrated Source Document Downloads**: High-integrity document retrieval. Users can click and download original municipal PDF source files directly on-demand.
+* **Dynamic Citations and Metadata Previews**: Citations are embedded dynamically inline with AI responses. Hovering over a citation reveals deep document metadata and previews in result cards.
+* **District Aide Research Notebook**: A persistent, real-time authenticated space for saving annotated bookmarks, custom research notes, and legislative records.
+* **Persistent Conversation History Logging**: A real-time research history feed allowing District Aides to seamlessly jump back into prior research sessions.
+* **Unified Sidebar Control**: A high-efficiency navigation sidebar that collapses and organizes bookmarked notebooks and chat history tabs with responsive tab controls.
+* **Glassmorphic Dark-Themed Dashboard**: Built on modern UI principles featuring a sleek custom layout, premium visual backdrops, smooth micro-animations, and responsive independent panel scrolling.
+* **Interactive Suggested Starters**: Prompts unauthenticated or returning users with randomized common policy suggestion templates to start research instantly.
+
+### B. Invisible / "Under-the-Hood" Features
+* **Automated Incremental Ingestion Pipeline (`ingest.py`)**: Daily automated cron job (configured via GCP Cloud Scheduler and Cloud Run Jobs) that automatically extracts, filters, and synchronizes 650+ municipal documents from the NYC Council API directly to Vertex AI Search Datastores.
+* **Role-Based RBAC Identity Mapping (NextAuth.js)**: Cryptographically secure OAuth 2.0 flow mapped to user roles (e.g., automatically identifying NYC Council staff using `@council.nyc.gov` domains as `district_aide` and granting specific district annotation privileges).
+* **Low-Latency Google Cloud Firestore Sync**: High-concurrency database synchronization using Native Firestore SDKs to persist notebook annotations and bookmark states in real-time across devices.
+* **DDoS Mitigation & Ingress Traffic Protection**: Advanced network-level defenses against Distributed Denial of Service (DDoS) and brute-force scraping attempts, utilizing strict ingress traffic filtering, endpoint rate limiting, and GCP serverless load-balancer autoscaling.
+* **Multi-Stage Containerized Builds**: Optimized multi-stage Dockerfiles compiling Next.js and FastAPI environments into production-ready lightweight serverless container images to minimize cold-start latency.
+
+---
+
+## 3. How to Run It on Your End
 
 Follow these steps to set up, configure, and run the CivicAI search engine and database synchronization system locally.
 
@@ -100,13 +123,13 @@ The frontend web application will start on `http://localhost:3000`.
 
 ---
 
-## 3. Demo Video
+## 4. Demo Video
 
 <video src="CivicAI_Demo.mp4" width="100%" controls></video>
 
 ---
 
-## 4. Techstack and Project Structure
+## 5. Techstack and Project Structure
 
 ### Techstack Rollout
 
@@ -145,7 +168,7 @@ CivicAI/
 
 ---
 
-## 5. Automated Background Ingestion (Cloud Scheduler)
+## 6. Automated Background Ingestion (Cloud Scheduler)
 
 CivicAI runs an automated ingestion cron job via GCP Cloud Scheduler and Cloud Run Jobs:
 - **Scheduler Config**: Triggered daily at 1:00 AM (`0 1 * * *`).
