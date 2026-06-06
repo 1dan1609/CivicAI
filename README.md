@@ -158,12 +158,16 @@ CivicAI/
 │   │   │   └── ResultCard.tsx    # Modular search result list elements. Dynamically displays extracted file metadata, previews, and annotation controls.
 │   │   └── lib/                  # Frontend context and utility functions.
 │   ├── Dockerfile                # Production Docker instruction for compiling the Next.js static and dynamic assets.
+│   ├── package.json              # Node.js project manifest defining runtime scripts and dependencies.
+│   ├── tsconfig.json             # TypeScript compiler rules and path configurations.
+│   ├── components.json           # Shadcn/ui component integration settings.
 │   └── .gitignore                # Frontend build cache and local module exclusions.
 │
 ├── main.py                       # The Core Python Backend. Implements the high-performance RAG API, custom distributed rate limiting, and Firestore synchronization.
 ├── ingest.py                     # The Ingestion Pipeline. A dedicated Python engine that automates the daily extraction and indexing of 650+ municipal documents.
 ├── Dockerfile                    # Multi-stage Docker instructions optimized for Python performance on Cloud Run.
 ├── requirements.txt              # Managed Python dependencies for the backend engine.
+├── Thumbnail.png                 # Main high-fidelity preview/thumbnail for the repository guide.
 ├── .gitignore                    # Root level Git exclusion system (excludes secrets, python caches, and local scratch files).
 └── README.md                     # Comprehensive product guide.
 ```
