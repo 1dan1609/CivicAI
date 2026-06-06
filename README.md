@@ -24,7 +24,7 @@ CivicAI operates on a dual-layer design, offering high-productivity user interfa
 
 ### B. Invisible / "Under-the-Hood" Features
 * **Automated Incremental Ingestion Pipeline (`ingest.py`)**: Daily automated cron job (configured via GCP Cloud Scheduler and Cloud Run Jobs) that automatically extracts, filters, and synchronizes 650+ municipal documents from the NYC Council API directly to Vertex AI Search Datastores.
-* **Role-Based RBAC Identity Mapping (NextAuth.js)**: Cryptographically secure OAuth 2.0 flow mapped to user roles (e.g., automatically identifying NYC Council staff using `@council.nyc.gov` domains as `district_aide` and granting specific district annotation privileges).
+* **Secure OAuth 2.0 Integration (NextAuth.js)**: Cryptographically secure Google OAuth 2.0 flow allowing users to log in securely to save bookmarks, persist notebook annotations, and manage personal search history.
 * **Low-Latency Google Cloud Firestore Sync**: High-concurrency database synchronization using Native Firestore SDKs to persist notebook annotations and bookmark states in real-time across devices.
 * **DDoS Mitigation & Ingress Traffic Protection**: Advanced network-level defenses against Distributed Denial of Service (DDoS) and brute-force scraping attempts, utilizing strict ingress traffic filtering, endpoint rate limiting, and GCP serverless load-balancer autoscaling.
 * **Multi-Stage Containerized Builds**: Optimized multi-stage Dockerfiles compiling Next.js and FastAPI environments into production-ready lightweight serverless container images to minimize cold-start latency.
@@ -168,10 +168,4 @@ CivicAI/
 └── README.md                     # Comprehensive product guide.
 ```
 
----
 
-## 6. Automated Background Ingestion (Cloud Scheduler)
-
-CivicAI runs an automated ingestion cron job via GCP Cloud Scheduler and Cloud Run Jobs:
-- **Scheduler Config**: Triggered daily at 1:00 AM (`0 1 * * *`).
-- **Functionality**: Fires the Cloud Run container executing `python ingest.py` to check for, extract, and index newly published municipal files.

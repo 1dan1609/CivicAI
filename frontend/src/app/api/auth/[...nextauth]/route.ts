@@ -15,15 +15,9 @@ const handler = NextAuth({
       if (profile && profile.email) {
         token.email = profile.email;
         // Map email to role and district
-        if (profile.email.endsWith("@council.nyc.gov")) {
-          token.role = "district_aide";
-          token.district = "5";
-          token.displayName = profile.name || "Jordan Rivera";
-        } else {
-          token.role = "citizen";
-          token.district = "";
-          token.displayName = profile.name || "Public Visitor";
-        }
+        token.role = "citizen";
+        token.district = "";
+        token.displayName = profile.name || "Public Visitor";
       }
       return token;
     },
