@@ -787,11 +787,33 @@ export default function Home() {
       }
       const data = await response.json();
       
+      // Rehydrate document URLs for the newly received search turn to use current API_BASE_URL
+      const rehydratedClusters = (data.clusters || []).map((cluster: any) => {
+        const rehydratedDocs = (cluster.documents || []).map((doc: any) => {
+          const rawFilename = doc.filename || doc.document_url?.split("/").pop() || doc.document_id;
+          let updatedUrl = doc.document_url;
+          if (rawFilename) {
+            const finalFilename = rawFilename.includes(".") ? rawFilename : `${rawFilename}.pdf`;
+            const decoded = decodeURIComponent(finalFilename);
+            const encodedFilename = encodeURIComponent(decoded);
+            updatedUrl = `${API_BASE_URL}/api/documents/${encodedFilename}`;
+          }
+          return {
+            ...doc,
+            document_url: updatedUrl
+          };
+        });
+        return {
+          ...cluster,
+          documents: rehydratedDocs
+        };
+      });
+
       // Update turn with retrieved data
       const activeTurn: ChatTurn = {
         ...newTurn,
         synthesis: data.synthesis || "",
-        clusters: data.clusters || [],
+        clusters: rehydratedClusters,
         relatedQueries: data.related_queries || [],
         isLoading: false,
       };

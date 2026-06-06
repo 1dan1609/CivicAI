@@ -700,11 +700,15 @@ def run_search(request: Request, payload: SearchRequest):
     
     import urllib.parse
     # Set the dynamic absolute document URL for each search result
+    base_url = str(request.base_url)
+    if request.headers.get("x-forwarded-proto") == "https":
+        base_url = base_url.replace("http://", "https://")
+        
     for cluster in final_clusters:
         for res in cluster["documents"]:
             if res.get("filename"):
                 encoded_filename = urllib.parse.quote(res["filename"])
-                res["document_url"] = f"{request.base_url}api/documents/{encoded_filename}"
+                res["document_url"] = f"{base_url}api/documents/{encoded_filename}"
     
     # Gather unique clustered documents for synthesis prompt
     clustered_docs = []
