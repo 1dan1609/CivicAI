@@ -147,29 +147,64 @@ The frontend web application will start on `http://localhost:3000`.
 ```
 CivicAI/
 │
-├── frontend/                     # Next.js 15 Web Application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx          # Main Search Dashboard. Manages search execution, real-time chat, bookmarks sidebars, and authentication state.
-│   │   │   └── api/auth/         # NextAuth.js handlers for securing OAuth callbacks.
-│   │   ├── components/
-│   │   │   ├── ChatHistoryPanel.tsx  # Secure research log history panel. Intercepts historical chats and dynamically rehydrates stale static file download URLs to the active production backend.
-│   │   │   ├── BookmarksPanel.tsx    # District Aide Research Notebook. Provides an interactive UI to edit annotations and view bookmarked PDF links synced with Firestore.
-│   │   │   └── ResultCard.tsx    # Modular search result list elements. Dynamically displays extracted file metadata, previews, and annotation controls.
-│   │   └── lib/                  # Frontend context and utility functions.
-│   ├── Dockerfile                # Production Docker instruction for compiling the Next.js static and dynamic assets.
-│   ├── package.json              # Node.js project manifest defining runtime scripts and dependencies.
-│   ├── tsconfig.json             # TypeScript compiler rules and path configurations.
-│   ├── components.json           # Shadcn/ui component integration settings.
-│   └── .gitignore                # Frontend build cache and local module exclusions.
+├── frontend/                                   # Next.js 15 Web Application Directory
+│   ├── public/                                 # Static Assets & SVG Illustrations
+│   │   ├── file.svg                            # Default document file layout icon.
+│   │   ├── globe.svg                           # Global network/web resource icon.
+│   │   ├── next.svg                            # Next.js framework official logo.
+│   │   ├── vercel.svg                          # Vercel deployment hosting platform logo.
+│   │   └── window.svg                          # Browser interface mock outline icon.
+│   │
+│   ├── src/                                    # Frontend Application Source Code
+│   │   ├── app/                                # Next.js App Router & Routes
+│   │   │   ├── api/auth/[...nextauth]/         # NextAuth.js Secure Authentication Routes
+│   │   │   │   └── route.ts                    # Dynamic NextAuth.js API handler for Google OAuth.
+│   │   │   ├── favicon.ico                     # Browser address-bar bookmark icon.
+│   │   │   ├── globals.css                     # Main CSS file containing custom animations and design tokens.
+│   │   │   ├── layout.tsx                      # Main Next.js root layout defining fonts and viewport wrappers.
+│   │   │   └── page.tsx                        # Main Interactive Search Dashboard page containing search and UI logic.
+│   │   │
+│   │   ├── components/                         # Reusable React & UI Components
+│   │   │   ├── ui/                             # Primitive Design-System Components (Shadcn UI)
+│   │   │   │   ├── accordion.tsx               # Collapsible expandable information cards.
+│   │   │   │   ├── badge.tsx                   # Sleek status labels and pill-style indicators.
+│   │   │   │   ├── button.tsx                  # Modular action button with custom interactive hover animations.
+│   │   │   │   ├── card.tsx                    # Glassmorphic display containers for data cards.
+│   │   │   │   ├── checkbox.tsx                # Interactive input boxes for user choices and filters.
+│   │   │   │   ├── hover-card.tsx              # Rich popover card triggered on cursor hover.
+│   │   │   │   └── input.tsx                   # Customizable form input text fields.
+│   │   │   │
+│   │   │   ├── AnalyticsPanel.tsx              # Renders metrics, trend lines, and district statistics.
+│   │   │   ├── BookmarksPanel.tsx              # User Research Notebook for managing bookmarked files and notes.
+│   │   │   ├── ChatHistoryPanel.tsx            # Session logs panel showing previous research runs.
+│   │   │   ├── ReasoningPanel.tsx              # Renders detailed multi-document synthesis and AI insights.
+│   │   │   └── ResultCard.tsx                  # Modular search card showing matching files, metadata, and citation logs.
+│   │   │
+│   │   ├── context/                            # Application State Contexts
+│   │   │   └── AuthContext.tsx                 # React Context API for managing user login and profile states.
+│   │   │
+│   │   └── lib/                                # Core Utility Functions
+│   │       └── utils.ts                        # Tailwind CSS merging utilities and helper methods.
+│   │
+│   ├── Dockerfile                              # Next.js multi-stage Docker build pipeline instructions.
+│   ├── components.json                         # Shadcn/ui CLI configuration manifest file.
+│   ├── eslint.config.mjs                       # Linter and code-quality policy rules.
+│   ├── next.config.ts                          # Next.js framework runtime configuration settings.
+│   ├── package-lock.json                       # Lock file securing exact node package dependencies.
+│   ├── package.json                            # Package manifest declaring app scripts and library versions.
+│   ├── postcss.config.mjs                      # PostCSS compiler config for processing Tailwind CSS.
+│   ├── tsconfig.json                           # TypeScript compiler parameters and alias mappings.
+│   └── .gitignore                              # Frontend-specific build and workspace files exclusions.
 │
-├── main.py                       # The Core Python Backend. Implements the high-performance RAG API, custom distributed rate limiting, and Firestore synchronization.
-├── ingest.py                     # The Ingestion Pipeline. A dedicated Python engine that automates the daily extraction and indexing of 650+ municipal documents.
-├── Dockerfile                    # Multi-stage Docker instructions optimized for Python performance on Cloud Run.
-├── requirements.txt              # Managed Python dependencies for the backend engine.
-├── Thumbnail.png                 # Main high-fidelity preview/thumbnail for the repository guide.
-├── .gitignore                    # Root level Git exclusion system (excludes secrets, python caches, and local scratch files).
-└── README.md                     # Comprehensive product guide.
+├── main.py                                     # Python FastAPI Backend Engine implementing RAG logic, rate limits, and Firestore syncing.
+├── ingest.py                                   # Python Automation Pipeline for downloading and indexing municipal legislative data.
+├── Dockerfile                                  # Backend Python multi-stage containerized environment instructions.
+├── requirements.txt                            # Main Python dependency package requirements file.
+├── Thumbnail.png                               # Main high-fidelity product guide preview thumbnail image.
+├── .gcloudignore                               # Exclusions file for optimizing Google Cloud CLI deployments.
+├── .gitattributes                              # Git LFS tracking configuration definitions.
+├── .gitignore                                  # Git exclusion definitions for protecting secrets and environment variables.
+└── README.md                                   # Root-level comprehensive, high-fidelity user guide.
 ```
 
 
