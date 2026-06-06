@@ -1144,7 +1144,7 @@ export default function Home() {
                 </>
               ) : (
                 /* Unauthenticated Sidebar Prompt */
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-5 space-y-4 border border-dashed border-border/60 rounded-2xl bg-muted/10 my-auto select-none min-h-[300px]">
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-5 space-y-4 border border-dashed border-border/60 rounded-2xl bg-muted/10 select-none min-h-[300px]">
                   <User className="h-9 w-9 text-muted-foreground/30 animate-pulse" />
                   <div className="space-y-1">
                     <h4 className="font-bold text-xs text-foreground/80">{t.notebookLocked}</h4>

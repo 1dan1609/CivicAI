@@ -63,23 +63,6 @@ function checkAuthRateLimit(clientIp: string): boolean {
 }
 
 async function wrappedAuthHandler(req: NextRequest, ctx: any) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1";
-  
-  // Apply rate limiting strictly to sensitive sign-in pages, OAuth callback, or POST attempts
-  const isSensitiveAuth = req.nextUrl.pathname.includes("/signin") || 
-                          req.nextUrl.pathname.includes("/callback") || 
-                          req.method === "POST";
-                          
-  if (isSensitiveAuth) {
-    const isAllowed = checkAuthRateLimit(ip);
-    if (!isAllowed) {
-      return new NextResponse(
-        JSON.stringify({ error: "Too many authentication attempts. Please try again after 1 minute." }),
-        { status: 429, headers: { "Content-Type": "application/json" } }
-      );
-    }
-  }
-  
   return handler(req, ctx);
 }
 
