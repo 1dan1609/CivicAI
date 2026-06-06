@@ -2,9 +2,9 @@
 
 ## 1. Description
 
-CivicAI is an AI-powered municipal research and analysis platform designed for District Aides, policy researchers, and public interest advocates to efficiently navigate, analyze, and synthesize massive volumes of local government documents, legislation files, and public records. 
+CivicAI is an AI-powered municipal research and analysis platform **purpose-built exclusively for New York City**. It is designed for District Aides, policy researchers, and public interest advocates to efficiently navigate, analyze, and synthesize massive volumes of NYC government documents, legislation files, and public records. 
 
-By leveraging a robust Retrieval-Augmented Generation (RAG) architecture, CivicAI answers complex municipal policy questions with high-context, verified insights backed by direct citations and live-rehydrated source document downloads. Additionally, the platform provides authenticated users with a secure, real-time persistent workspace (District Aide Research Notebook) to manage annotated bookmarks, research logs, and past search histories safely.
+This specialized focus is made possible by the New York City Council’s sophisticated and public-facing legislative data infrastructure—utilizing a complex pipeline of RSS feeds, XML data, and robust Legistar APIs—which CivicAI leverages to maintain a high-fidelity, real-time mirror of the city's legislative landscape. By leveraging a robust Retrieval-Augmented Generation (RAG) architecture, CivicAI answers complex NYC policy questions with high-context, verified insights backed by direct citations and live-rehydrated source document downloads. Additionally, the platform provides authenticated users with a secure, real-time persistent workspace (District Aide Research Notebook) to manage annotated bookmarks, research logs, and past search histories safely.
 
 ---
 
