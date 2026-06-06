@@ -125,7 +125,7 @@ The frontend web application will start on `http://localhost:3000`.
 
 ## 4. Demo Video
 
-<video src="CivicAI_Demo.mp4" width="100%" controls></video>
+<video src="https://media.githubusercontent.com/media/1dan1609/CivicAI/main/CivicAI_Demo.mp4" width="100%" controls></video>
 
 ---
 
