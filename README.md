@@ -125,7 +125,9 @@ The frontend web application will start on `http://localhost:3000`.
 
 ## 4. Demo Video
 
-<video src="https://media.githubusercontent.com/media/1dan1609/CivicAI/main/CivicAI_Demo.mp4" width="100%" controls></video>
+[![CivicAI Demo Video](https://img.shields.io/badge/▶_Watch_Product_Demo-blue?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/141efwC7CBAa8DUaunwbLdnHu2dcuvWo4/view?usp=sharing)
+
+*Click the badge above to watch the full product walkthrough on Google Drive.*
 
 ---
 
