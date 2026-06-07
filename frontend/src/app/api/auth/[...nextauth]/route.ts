@@ -57,12 +57,19 @@ function checkAuthRateLimit(clientIp: string): boolean {
 }
 
 async function wrappedAuthHandler(req: NextRequest, ctx: any) {
-  // Extract client IP (handling GCP load balancer headers which can be a list)
-  const forwarded = req.headers.get("x-forwarded-for");
-  const clientIp = forwarded ? forwarded.split(',')[0].trim() : "127.0.0.1";
-  
-  if (!checkAuthRateLimit(clientIp)) {
-    return new NextResponse("Too many authentication attempts. Please try again in a minute.", { status: 429 });
+  // Only rate limit actual sign-in attempts and callbacks. 
+  // We exclude 'session' and 'csrf' checks to avoid logging users out on refresh.
+  const path = req.nextUrl.pathname;
+  const isAuthAttempt = path.includes("/signin") || path.includes("/callback");
+
+  if (isAuthAttempt) {
+    // Extract client IP (handling GCP load balancer headers which can be a list)
+    const forwarded = req.headers.get("x-forwarded-for");
+    const clientIp = forwarded ? forwarded.split(',')[0].trim() : "127.0.0.1";
+    
+    if (!checkAuthRateLimit(clientIp)) {
+      return new NextResponse("Too many authentication attempts. Please try again in a minute.", { status: 429 });
+    }
   }
 
   return handler(req, ctx);
