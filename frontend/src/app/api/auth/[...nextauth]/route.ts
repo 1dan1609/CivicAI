@@ -40,7 +40,7 @@ const authRateLimitStore = new Map<string, number[]>();
 function checkAuthRateLimit(clientIp: string): boolean {
   const now = Date.now();
   const windowMs = 60 * 1000; // 1 minute
-  const limit = 5; // maximum of 5 attempts
+  const limit = 10; // maximum of 10 attempts
 
   const attempts = authRateLimitStore.get(clientIp) || [];
   // Filter attempts still in active window
@@ -57,8 +57,9 @@ function checkAuthRateLimit(clientIp: string): boolean {
 }
 
 async function wrappedAuthHandler(req: NextRequest, ctx: any) {
-  // Extract client IP (handling GCP load balancer headers)
-  const clientIp = req.headers.get("x-forwarded-for") || "127.0.0.1";
+  // Extract client IP (handling GCP load balancer headers which can be a list)
+  const forwarded = req.headers.get("x-forwarded-for");
+  const clientIp = forwarded ? forwarded.split(',')[0].trim() : "127.0.0.1";
   
   if (!checkAuthRateLimit(clientIp)) {
     return new NextResponse("Too many authentication attempts. Please try again in a minute.", { status: 429 });
